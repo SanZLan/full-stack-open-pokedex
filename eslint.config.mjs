@@ -3,6 +3,8 @@ import js from '@eslint/js'
 import react from 'eslint-plugin-react';
 import jest from 'eslint-plugin-jest';
 
+import { fixupPluginRules } from '@eslint/compat';
+
 export default [
   js.configs.recommended,
   {
@@ -15,8 +17,8 @@ export default [
       ecmaVersion: "latest",
     },
     plugins: {
-      react: react,
-      jest: jest,
+      react: fixupPluginRules(react),
+      jest: fixupPluginRules(jest),
     },
     rules: {
       "indent": [
