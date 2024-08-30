@@ -31,6 +31,7 @@
     "@babel/preset-env": "^7.23.7",
     "@babel/preset-react": "^7.23.3",
     "@eslint/compat": "^1.1.1",
+    "@flydotio/dockerfile": "^0.5.8",
     "@playwright/test": "^1.46.1",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
@@ -61,7 +62,9 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "testPathIgnorePatterns": ["tests"]
+    "testPathIgnorePatterns": [
+      "tests"
+    ]
   },
   "type": "module"
 }
