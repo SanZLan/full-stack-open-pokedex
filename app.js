@@ -12,7 +12,7 @@ app.listen(PORT, () => {
 })
 
 app.get('/version', (req, res) => {
-  res.send('Pokedex version: 4')
+  res.send('Pokedex version: 5')
 })
 
 app.get('/health', (req, res) => {

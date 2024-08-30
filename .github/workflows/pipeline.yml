@@ -25,7 +25,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npx playwright test
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly setup
+        uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly deploy
         run: flyctl deploy --remote-only
         env:
