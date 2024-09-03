@@ -27,5 +27,5 @@ jobs:
           CONTAINS: ${{ contains(toJson(github.event.commits.*.message), '#skip') }}
         run: echo "$CONTAINS"
       - name: conditional commit contains skip hash
-        if: ${{ env.CONTAINS == 'true' }}
+        if: ${{ env.CONTAINS }}
         run: echo "It contains skip expression"
