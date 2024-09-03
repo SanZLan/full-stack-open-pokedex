@@ -38,41 +38,18 @@ jobs:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
       - name: Deployment success
         if: steps.fly_deploy.outcome == 'success'
-        uses: sarisia/actions-status-discord@v1
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "<@SanZLan>"
-          title: "Pokedex deploy"
-          description: "A new version of Pokedex was deployed"
-          color: 0x008000
-          url: "[${{ github.repository }}](${{ github.repositoryUrl }})"
-      # - name: Deployment success
-      #   if: steps.fly_deploy.outcome == 'success'
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      #   uses: Ilshidur/action-discord@master
-      #   with:
-      #     args: 'A new version of Pokedex deployed to ${{ github.repositoryUrl }} by ${{ github.actor }}'
-      # - name: Deployment success
-      #   uses: rjstone/discord-webhook-notify@v1
-      #   if: steps.fly_deploy.outcome == 'success'
-      #   with:
-      #     severity: info
-      #     description: A new version of Pokedex deployed
-      #     details: 'to ${{ github.repositoryUrl }} by ${{ github.actor }}'
-      #     footer: 'Severity: Informational'
-      #     text: A new version of Pokedex deployed
-      #     webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      # - name: Deployment failed
-      #   uses: rjstone/discord-webhook-notify@v1
-      #   if: steps.fly_deploy.outcome == 'failure'
-      #   with:
-      #     severity: error
-      #     description: Deployment of Pokedex failed
-      #     details: 'to ${{ github.repositoryUrl }} by ${{ github.actor }}'
-      #     footer: 'Severity: Error'
-      #     text: Build failed
-      #     webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          args: 'A new version of Pokedex deployed to [${{ github.repository }}](${{ github.repositoryUrl }}) by ${{ github.actor }}'
+      - name: Deployment success
+        if: steps.fly_deploy.outcome == 'failure'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'A new version of Pokedex failed to deploy with commit [https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}](https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}) by ${{ github.actor }}'
 
   tag_release:
     needs: [simple_deployment_pipeline]
