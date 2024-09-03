@@ -42,7 +42,7 @@ jobs:
         with:
           severity: info
           description: A new version of Pokedex deployed
-          details: to ${{ github.repositoryUrl }} by ${{ github.actor }}
+          details: 'to ${{ github.repositoryUrl }} by ${{ github.actor }}'
           footer: 'Severity: Informational'
           text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
@@ -52,7 +52,7 @@ jobs:
         with:
           severity: error
           description: Deployment of Pokedex failed
-          details: to ${{ github.repositoryUrl }} by ${{ github.actor }}
+          details: 'to ${{ github.repositoryUrl }} by ${{ github.actor }}'
           footer: 'Severity: Error'
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
