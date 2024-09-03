@@ -31,10 +31,32 @@ jobs:
       - name: Fly setup
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly deploy
+        id: fly_deploy
         if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits.*.message), '#skip') }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
+      - name: Deployment success
+        uses: rjstone/discord-webhook-notify@v1
+        if: steps.fly_deploy.outcome == 'success'
+        with:
+          severity: info
+          description: A new version of Pokedex deployed
+          details: to ${{ github.repositoryUrl }} by ${{ github.actor }}
+          footer: 'Severity: Informational'
+          text: A new version of Pokedex deployed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Deployment failed
+        uses: rjstone/discord-webhook-notify@v1
+        if: steps.fly_deploy.outcome == 'failure'
+        with:
+          severity: error
+          description: Deployment of Pokedex failed
+          details: to ${{ github.repositoryUrl }} by ${{ github.actor }}
+          footer: 'Severity: Error'
+          text: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
