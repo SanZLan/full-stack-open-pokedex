@@ -38,11 +38,21 @@ jobs:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
       - name: Deployment success
         if: steps.fly_deploy.outcome == 'success'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
+        uses: sarisia/actions-status-discord@v1
         with:
-          args: 'A new version of Pokedex deployed to ${{ github.repositoryUrl }} by ${{ github.actor }}'
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "<@SanZLan>"
+          title: "Pokedex deploy"
+          description: "A new version of Pokedex was deployed"
+          color: 0x008000
+          url: "[${{ github.repository }}](${{ github.repositoryUrl }})"
+      # - name: Deployment success
+      #   if: steps.fly_deploy.outcome == 'success'
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      #   uses: Ilshidur/action-discord@master
+      #   with:
+      #     args: 'A new version of Pokedex deployed to ${{ github.repositoryUrl }} by ${{ github.actor }}'
       # - name: Deployment success
       #   uses: rjstone/discord-webhook-notify@v1
       #   if: steps.fly_deploy.outcome == 'success'
