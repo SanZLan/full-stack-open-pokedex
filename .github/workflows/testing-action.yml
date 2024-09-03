@@ -24,7 +24,7 @@ jobs:
         run: echo "$COMMIT_MESSAGES"
       - name: commit contains `#skip`
         env:
-          CONTAINS: ${{ contains(env.COMMIT_MESSAGES, 'skip') }}
+          CONTAINS: ${{ contains(env.COMMIT_MESSAGES, '#skip') }}
         run: echo "$CONTAINS"
       - name: conditional commit contains skip
         if: ${{ env.CONTAINS == 'true' }}
