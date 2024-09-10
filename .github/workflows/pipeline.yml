@@ -45,14 +45,16 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'A new version of Pokedex deployed to [${{ github.repository }}](${{ github.repositoryUrl }}) by ${{ github.actor }}'
+          args: |
+            A new version of Pokedex deployed to ${{ github.repository }} by ${{ github.actor }}
       - name: Deployment success
         if: steps.fly_deploy.outcome == 'failure'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'A new version of Pokedex failed to deploy with commit [https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}](https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}) by ${{ github.actor }}'
+          args: |
+            A new version of Pokedex failed to deploy with commit ${{ github.sha }} by ${{ github.actor }}
 
   tag_release:
     if: github.event_name != 'schedule'
