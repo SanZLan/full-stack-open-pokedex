@@ -7,9 +7,12 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   simple_deployment_pipeline:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -52,6 +55,7 @@ jobs:
           args: 'A new version of Pokedex failed to deploy with commit [https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}](https://github.com/SanZLan/full-stack-open-pokedex/commit/${{ github.sha }}) by ${{ github.actor }}'
 
   tag_release:
+    if: github.event_name != 'schedule'
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
@@ -64,3 +68,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
+
+  periodic_health_check:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://example.com|http://example.com
+          max-attempts: 3
+          retry-delay: 5s
