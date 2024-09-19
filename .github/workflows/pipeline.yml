@@ -72,7 +72,6 @@ jobs:
           DEFAULT_BUMP: patch
 
   periodic_health_check:
-    if: github.event_name == 'schedule'
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
